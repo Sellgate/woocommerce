@@ -214,14 +214,8 @@ class WC_Gateway_Sellgate extends WC_Payment_Gateway
             wp_die('No key provided', 'Invalid webhook', 400);
         }
     
-        $order_key = sanitize_text_field($_GET['key']);
-        $order_id = $this->get_order_id_from_key($order_key);
-    
-        if (!$order_id) {
-            wp_die('Order not found', 'Invalid webhook', 404);
-        }
-    
-        $order = wc_get_order($order_id);
+        $order_key = sanitize_text_field($_REQUEST['key']);
+        $order = wc_get_order($order_key);
     
         if (!$order) {
             wp_die('Order not found', 'Invalid webhook', 404);
@@ -230,13 +224,10 @@ class WC_Gateway_Sellgate extends WC_Payment_Gateway
         // Check if this hasn't already been processed
         if ($order->get_status() == 'pending') {
             // Mark payment as complete
-            $order->payment_complete();
+            $order->payment_complete(); 
     
-            // Add order note
-            $order->add_order_note(__('Payment completed via Sellgate.', 'sellgate'));
-    
-            // Update order status to completed
-            $order->update_status('completed', __('Payment received and order completed via Sellgate.', 'sellgate'));
+            // Update order status
+            $order->update_status('completed', __('Order completed via Sellgate payment.', 'sellgate'));
         }
     
         wp_die('Webhook processed successfully', 'Success', 200);
