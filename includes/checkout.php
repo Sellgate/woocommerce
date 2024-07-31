@@ -11,10 +11,10 @@ class WC_Gateway_Sellgate extends WC_Payment_Gateway
     public function __construct()
     {
         $this->id = 'sellgate';
-        $this->icon = SELLGATE_BASE_URL . '/assets/icon.png';
+        $this->icon = 'yes' === $this->get_option('show_logo') ? SELLGATE_BASE_URL . '/assets/logo.png' : '';
         $this->has_fields = false;
         $this->method_title = __('Sellgate', 'sellgate');
-        $this->method_description = __('Accept payments through Sellgate', 'sellgate');
+        $this->method_description = __('Accept cryptocurrencies on your WooCommerce store.', 'sellgate');
 
         $this->supported_cryptocurrencies = [
             ["network" => "BTC", "coin" => "BTC", "min_value" => 0.00008000],
@@ -58,10 +58,9 @@ class WC_Gateway_Sellgate extends WC_Payment_Gateway
         $this->title = $this->get_option('title');
         $this->description = $this->get_option('description');
         $this->enabled = $this->get_option('enabled');
-        $this->testmode = 'yes' === $this->get_option('testmode');
         $this->debug_mode = 'yes' === $this->get_option('debug_mode');
 
-        add_action('woocommerce_update_options_payment_gateways_' . $this->id, array($this, 'process_admin_options'));
+        add_action('woocommerce_update_options_payment_gateways_' . $this->id, [$this, 'process_admin_options']);
         add_action('woocommerce_api_sellgate_webhook_handler', [$this, 'webhook_handler']);
     }
 
@@ -87,11 +86,10 @@ class WC_Gateway_Sellgate extends WC_Payment_Gateway
                 'description' => __('This controls the description which the user sees during checkout.', 'sellgate'),
                 'default' => __('Pay with cryptocurrencies.', 'sellgate')
             ),
-            'testmode' => array(
-                'title' => __('Test mode', 'sellgate'),
-                'label' => __('Enable Test Mode', 'sellgate'),
+            'show_logo' => array(
+                'title' => __('Show Logo', 'sellgate'),
                 'type' => 'checkbox',
-                'description' => __('Place the payment gateway in test mode.', 'sellgate'),
+                'label' => __('Display Sellgate logo on checkout', 'sellgate'),
                 'default' => 'yes',
                 'desc_tip' => true,
             ),
@@ -168,10 +166,23 @@ class WC_Gateway_Sellgate extends WC_Payment_Gateway
             }
         }
 
+        $supported_currencies = array(
+            "USD", "EUR", "GBP", "CAD", "JPY", "AED", "MYR", "IDR", "THB", "CHF",
+            "SGD", "RUB", "ZAR", "TRY", "LKR", "RON", "BGN", "HUF", "CZK", "PHP",
+            "PLN", "UGX", "MXN", "INR", "HKD", "CNY", "BRL", "DKK", "TWD", "AUD",
+            "NGN", "SEK", "NOK"
+        );
+
+        $order_currency = $order->get_currency();
+        if (!in_array($order_currency, $supported_currencies)) {
+            throw new Exception(__('Unsupported currency:', 'sellgate') . ' ' . $order_currency);
+        }
+
         $body = array(
-            'title' => 'Order #' . $order->get_order_number(),
-            'description' => 'Payment for order #' . $order->get_order_number(),
+            'title' => get_bloginfo('name') . ' Order #' . $order->get_order_number(),
+            'description' => 'Payment for ' . get_bloginfo('name') . ' order #' . $order->get_order_number(),
             'price' => $order->get_total(),
+            'currency' => $order_currency,
             'crypto' => $crypto,
             'webhook' => add_query_arg(
                 array(
