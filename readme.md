@@ -15,12 +15,10 @@ And way more. All the supported cryptocurrencies are listed on [our website](htt
 
 ## Installation
 
-1. Download the latest version of the plugin in the releases section or on our [website](https://sellgate.io/docs/woocommerce).
+1. [Download the latest version of the plugin.](https://github.com/Sellgate/woocommerce/releases/download/v1.0.0/sellgate-1.0.0.zip).
 2. Upload the plugin to your WordPress installation.
 3. Activate the plugin.
 4. Go to Woocommerce > Settings > Payments and add your crypto addresses.
 5. Save your changes.
-
-Want to see a more detailed guide? Check out our [documentation](https://sellgate.io/docs/woocommerce).
 
 
