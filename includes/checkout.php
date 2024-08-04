@@ -208,7 +208,7 @@ class WC_Gateway_Sellgate extends WC_Payment_Gateway
             throw new Exception(__('Payment error:', 'sellgate') . 'Sellgate API error: ' . $response->get_error_message());
         }
 
-        $body = json_decode(wp_remote_retrieve_body($response), true);
+        $body = wp_json_encode(wp_remote_retrieve_body($response), true);
 
         if (isset($body['url'])) {
             return $body['url'];
@@ -219,7 +219,7 @@ class WC_Gateway_Sellgate extends WC_Payment_Gateway
 
     public function webhook_handler() 
     {
-        $data = json_decode(file_get_contents('php://input'), true);
+        $data = wp_json_encode(file_get_contents('php://input'), true);
     
         if (!isset($_GET['key'])) {
             wp_die('No key provided', 'Invalid webhook', 400);

@@ -1,10 +1,14 @@
-=== Sellgate ===
+=== Sellgate  ===
 Contributors: sellgate
-Tags: crypto payments, woocommerce, payment gateway, crypto, payment, pay with crypto, payment request, bitcoin, bnb, usdt, ethereum, litecoin, bitcoin cash, shib, doge
+Tags: woocommerce, payment gateway, crypto, payment, pay with crypto
 Requires at least: 5.8
 Tested up to: 6.6.1
 Stable tag: 1.0.0
 Requires PHP: 7.2
+Author URI: https://sellgate.io/
+Author: Sellgate
+License: GPLv2 or later
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
 WC requires at least: 5.8
 WC tested up to: 9.1.4
 License: MIT

@@ -1,17 +1,16 @@
 <?php
 /**
  * Plugin Name: Sellgate
- * Plugin URI: https://sellgate.io/
+ * Plugin URI: https://github.com/Sellgate/woocommerce
  * Description: Accept a variety of crypto payments on your Woocommerce store.
  * Version: 1.0.0
  * Author: Sellgate
  * Author URI: https://sellgate.io/
  * Text Domain: sellgate
- * Domain Path: /languages
  * Requires at least: 5.0
- * Tested up to: 6.4
- * WC requires at least: 4.0
- * WC tested up to: 8.4
+ * Tested up to: 6.6.1
+ * WC requires at least: 5.8
+ * WC tested up to: 9.1.4
  */
 
 if (!defined('ABSPATH')) {
