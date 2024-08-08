@@ -195,7 +195,7 @@ class WC_Gateway_Sellgate extends WC_Payment_Gateway
         );
 
         $args = array(
-            'body' => json_encode($body),
+            'body' => wp_json_encode($body),
             'headers' => array(
                 'Content-Type' => 'application/json',
             ),
